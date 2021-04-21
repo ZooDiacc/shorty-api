@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://Zoodiac:freebox1@zoodiac.a1qsi.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "baseURL":"http:localhost:5000"
+}
