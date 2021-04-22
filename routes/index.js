@@ -3,7 +3,8 @@ const router = express.Router();
 const Url = require('../models/Url');
 const cors = require('cors');
 
-app.use(cors())
+
+
 
 
 
