@@ -1,4 +1,4 @@
-POST https://shorty-api-shortlink.herokuapp.com/api/url/shorten
+POST http://shorty-api-shortlink.herokuapp.com/api/url/shorten
 Content-Type: application/json
 
 {
