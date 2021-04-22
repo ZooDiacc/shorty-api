@@ -24,24 +24,25 @@ router.post('/shorten', async(req, res) => {
     // Check long url
     if (validUrl.isUri(longUrl)) {
         try {
-            let url = await Url.findOne({ longUrl });
+            // let url = await Url.findOne({ longUrl });
 
-            if (url) {
-                res.json(url);
-            } else {
-                const shortUrl = baseUrl + '/' + urlCode;
+            // if (url) {
+            // res.json(url);
+            // } else {
+            const shortUrl = baseUrl + '/' + urlCode;
 
-                url = new Url({
-                    longUrl,
-                    shortUrl,
-                    urlCode,
-                    date: new Date()
-                });
+            url = new Url({
+                longUrl,
+                shortUrl,
+                urlCode,
+                userId: "",
+                date: new Date()
+            });
 
-                await url.save();
+            await url.save();
 
-                res.json(url);
-            }
+            res.json(url);
+            // }
         } catch (err) {
             console.error(err);
             res.status(500).json('Server error');
