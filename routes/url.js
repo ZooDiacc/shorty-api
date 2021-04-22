@@ -24,12 +24,8 @@ router.post('/shorten', async(req, res) => {
     // Check long url
     if (validUrl.isUri(longUrl)) {
         try {
-            // let url = await Url.findOne({ longUrl });
 
-            // if (url) {
-            // res.json(url);
-            // } else {
-            const shortUrl = baseUrl + '/' + urlCode;
+            const shortUrl = baseUrl + urlCode;
 
             url = new Url({
                 longUrl,
@@ -52,4 +48,7 @@ router.post('/shorten', async(req, res) => {
     }
 });
 
+router.get('/', function(req, res, next) {
+
+});
 module.exports = router;
