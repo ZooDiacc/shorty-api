@@ -12,7 +12,7 @@ app.use(express.json());
 // Define Routes
 app.use('/', require('./routes/index'));
 app.use('/api/url', require('./routes/url'));
-//app.use('/', require('./routes/user'));
+app.use('/', require('./routes/user'));
 
 const PORT = 5000;
 
