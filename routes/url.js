@@ -21,9 +21,9 @@ router.post('/shorten', async(req, res) => {
         })
     }
 
-    const verifyè = await jwt.verify(token, "ELYAS");
+    const verify = await jwt.verify(token, "ELYAS");
 
-    console.log("VERIFY", verify.email)
+    console.log(verify)
 
 
     const baseUrl = config.get('baseUrl');
@@ -47,7 +47,7 @@ router.post('/shorten', async(req, res) => {
                 longUrl,
                 shortUrl,
                 urlCode,
-                userId: "",
+                email: verify.email,
                 date: new Date()
             });
 
