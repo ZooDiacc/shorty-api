@@ -9,6 +9,7 @@ const jwt = require('jsonwebtoken');
 
 
 
+
 // @route     POST /api/url/shorten
 // @desc      Create short URL
 router.post('/shorten', async(req, res) => {
@@ -22,7 +23,7 @@ router.post('/shorten', async(req, res) => {
 
     const verify = await jwt.verify(token, "ELYAS");
 
-    console.log(verify)
+    // console.log("VERIFY", verify.email)
 
 
     const baseUrl = config.get('baseUrl');
@@ -46,7 +47,7 @@ router.post('/shorten', async(req, res) => {
                 longUrl,
                 shortUrl,
                 urlCode,
-                email: verify,
+                email: verify.email,
                 date: new Date()
             });
 

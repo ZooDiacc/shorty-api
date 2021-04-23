@@ -91,13 +91,13 @@ router.post('/login', async(req, res, next) => {
             if (user) {
 
                 let errors = {};
-                console.log("IN lala")
+
                 if (user.email == req.body.email) {
                     console.log("IN IT")
                     bcrypt.compare(req.body.password, user.password, function(err, result) {
-                        console.log("IN tototoT")
+
                         if (result) {
-                            console.log("IN ImamamaamT")
+
                             const newtoken = jwt.sign({ name: user.name, email: user.email }, "ELYAS", { expiresIn: 86400 })
                             const verify = jwt.verify(newtoken, "ELYAS");
                             console.log("CRYPTé", newtoken)
