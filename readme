@@ -1,3 +1,5 @@
+post command for the api
+
 const axios = require('axios')
 
 axios.post('http://shorty-api-shortlink.herokuapp.com/api/url/shorten', {
