@@ -4,21 +4,28 @@ const validUrl = require('valid-url');
 const shortid = require('shortid');
 const config = require('config');
 const Url = require('../models/Url');
+const jwt = require('jsonwebtoken');
 
 
-router.get("/", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
-});
+
 
 
 // @route     POST /api/url/shorten
 // @desc      Create short URL
 router.post('/shorten', async(req, res) => {
-    const { longUrl } = req.body;
+    const { longUrl, token } = req.body;
+
+    if (!token) {
+        res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
+
+    const verifyè = await jwt.verify(token, "ELYAS");
+
+    console.log("VERIFY", verify.email)
+
+
     const baseUrl = config.get('baseUrl');
 
 

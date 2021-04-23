@@ -2,15 +2,10 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const passport = require('passport');
+const jwt = require('jsonwebtoken');
 
 
-router.get("/", (req, res) => {
-    res.setHeader("Access-Control-Allow-Origin", "*")
-    res.setHeader("Access-Control-Allow-Credentials", "true");
-    res.setHeader("Access-Control-Max-Age", "1800");
-    res.setHeader("Access-Control-Allow-Headers", "content-type");
-    res.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, DELETE, PATCH, OPTIONS");
-});
+
 
 
 
@@ -42,7 +37,7 @@ router.post('/register', (req, res) => {
     }
 
     if (errors.length > 0) {
-        res.render('register', {
+        res.status(500).json({
             errors,
             name,
             email,
@@ -71,16 +66,10 @@ router.post('/register', (req, res) => {
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
                         if (err) throw err;
                         newUser.password = hash;
-                        newUser
-                            .save()
-                            .then(user => {
-                                req.flash(
-                                    'success_msg',
-                                    'You are now registered and can log in'
-                                );
-                                res.redirect('/users/login');
-                            })
-                            .catch(err => console.log(err));
+                        newUser.save();
+                        res.status(200).json({
+                            msg: "Success"
+                        })
                     });
                 });
             }
@@ -89,12 +78,46 @@ router.post('/register', (req, res) => {
 });
 
 // Login
-router.post('/login', (req, res, next) => {
-    passport.authenticate('local', {
-        successRedirect: '/dashboard',
-        failureRedirect: '/users/login',
-        failureFlash: true
-    })(req, res, next);
+
+
+router.post('/login', async(req, res, next) => {
+    User.findOne({
+            $or: [{
+                email: req.body.email
+            }, {
+                username: req.body.username
+            }]
+        }).then(user => {
+            if (user) {
+                console.log("IN IT")
+                let errors = {};
+                if (user.email == req.body.email) {
+                    bcrypt.compare(req.body.password, user.password, function(err, result) {
+                        if (result) {
+                            const newtoken = jwt.sign({ name: user.name, email: user.email }, "ELYAS", { expiresIn: 86400 })
+
+                            console.log("CRYPTé", newtoken)
+                            console.log("no crypté", verify)
+
+                            res.status(200).json({
+                                name: user.name,
+                                email: user.email,
+                                token: newtoken
+                            });
+                        } else {
+                            res.status(401).json({
+                                message: "Unauthorized"
+                            })
+                        }
+                    })
+                }
+            }
+        })
+        .catch(err => {
+            return res.status(500).json({
+                error: err
+            });
+        });
 });
 
 // Logout
