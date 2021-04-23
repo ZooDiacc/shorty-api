@@ -15,12 +15,6 @@ const jwt = require('jsonwebtoken');
 router.post('/shorten', async(req, res) => {
     const { longUrl, token } = req.body;
 
-    if (!token) {
-        res.status(401).json({
-            message: "Unauthorized"
-        })
-    }
-
     const verify = await jwt.verify(token, "ELYAS");
 
     console.log(verify)
@@ -47,7 +41,7 @@ router.post('/shorten', async(req, res) => {
                 longUrl,
                 shortUrl,
                 urlCode,
-                email: verify.email,
+                email: verify,
                 date: new Date()
             });
 
