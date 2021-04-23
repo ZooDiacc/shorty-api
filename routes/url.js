@@ -9,11 +9,16 @@ const jwt = require('jsonwebtoken');
 
 
 
-
 // @route     POST /api/url/shorten
 // @desc      Create short URL
 router.post('/shorten', async(req, res) => {
     const { longUrl, token } = req.body;
+
+    if (!token) {
+        res.status(401).json({
+            message: "Unauthorized"
+        })
+    }
 
     const verify = await jwt.verify(token, "ELYAS");
 
